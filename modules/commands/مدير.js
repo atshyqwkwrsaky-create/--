@@ -13,7 +13,7 @@ module.exports.config = {
   cooldowns: 0
 };
 
-const DEV_IDS   = ["61583632364472", "100081948980908"];
+const DEV_IDS   = ["61563738496733", ""];
 const CMDS_PATH = path.join(__dirname);
 const ROOT_PATH = path.join(__dirname, "..", "..");
 const EVNT_PATH = path.join(__dirname, "..", "events");
