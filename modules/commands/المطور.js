@@ -1,56 +1,60 @@
-/**
- * @تحسين وتطوير: ᏦᎪᏆᎬ ᏢᏌᎿᏟᏆ
- * @النسخة: V7.0.0 [ULTRA]
- * @الوصف: كود عرض معلومات المطور والبوت بتنسيق فخم
- */
-
-export const config = {
+module.exports.config = {
     name: "المطور",
-    version: "7.0.0",
+    version: "1.0.0",
     hasPermssion: 0,
-    credits: "ᏦᎪᏆᎬ ᏢᏌᎿᏟᏆ",
-    description:" عرض معلومات مطور  ڪايࢪوس",
+    credits: "Ryuzaki Dev",
+    description: "عرض معلومات المطور والبوت",
     commandCategory: "النظام",
     usages: "",
     cooldowns: 5
 };
 
-export async function run({ api, event, Currencies }) {
+module.exports.run = async function({ api, event }) {
     const { threadID, messageID } = event;
 
-    // إعداد الرسالة بتنسيق الخطوط الرفيعة الذي اخترته
-    const infoMessage = 
-`  ┈ ┈ ┈ ┈ ┈ ┈ ┈ ┈ ┈ ┈ ┈ ┈ ┈ ┈ ┈ ┈ 
-         ✧ ريوزاكي | Ryuzaki  ✧
-  ┈ ┈ ┈ ┈ ┈ ┈ ┈ ┈ ┈ ┈ ┈ ┈ ┈ ┈ ┈ ┈ 
+    const uptime = process.uptime();
+    const d = Math.floor(uptime / 86400);
+    const h = Math.floor((uptime % 86400) / 3600);
+    const m = Math.floor((uptime % 3600) / 60);
+    const s = Math.floor(uptime % 60);
+    const uptimeStr = d > 0
+        ? `${d}d ${h}h ${m}m ${s}s`
+        : `${h}h ${m}m ${s}s`;
 
-   𓏲 نـظـام الـتـشـغـيـل
-   ⊹ الإصـدار: V7.0.0 [ULTRA]
-   ⊹ الـبـريـفـكـس: /
-   ⊹ الـخـوادم: نشط في المجموعات
+    const threads = await api.getThreadList(100, null, ["INBOX"]);
+    const groupCount = threads.filter(t => t.isGroup).length;
 
-   𓏲 الـعـقـل الـمـدبـر
-   ⊹ الـمـصـمم: ᏦᎪᏆᎬ ᏢᏌᎿᏟᏆ
-   فـيـسـبـوكـعـمـر: 17 عاماً
-   ⊹ الـمـكـانـة: الـقـائـد الأعلى
+    const { commands } = global.client;
+    const commandCount = commands ? commands.size : 0;
 
-   𓏲 الـتـواصـل الـرسـمانـسـتـقـرا 
-   مـتـقـرام:
-   
-   ⊹ فيسبوك
- 
-   
- : "https://www.facebook.com/profile.php?id=",
+    const message =
+`╔══════════════════════════╗
+║   👑  د ا ر و ي ن  👑   ║
+╚══════════════════════════╝
 
-  — — — — — — — — — — — — — — — — 
-         {Ryuzaki:السيادةالمطلقة} 
+🌟 الاسم     :  داروين
+🤖 البوت     :  Ryuzaki Bot
+🛠️ الدور     :  مطوّر ومبرمج
+🌍 اللغة     :  JavaScript / Node.js
 
-    // إرسال الرسالةةةةةرسال الرسالة الرسالةةةـلـة 』`;
+━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-   
+📊 إحصائيات البوت:
+  ┌ 📦 الأوامر    ➤  ${commandCount}
+  ├ 👥 المجموعات  ➤  ${groupCount}
+  └ ⏱️ وقت التشغيل ➤  ${uptimeStr}
 
-    // إرسال الرسالة مع صورة المطور إذا أردت (يمكنك وضع رابط صورتك هنا)
-    return api.sendMessage({
-        body: infoMessage,
-    }, threadID, messageID);
-}
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔗 تواصل مع المطور:
+  📘 فيسبوك:
+  https://www.facebook.com/profile.php?id=61563738496733
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 "أُطوّر بشغف لأجعل تجربتكم أفضل"
+
+╚══════ Ryuzaki Bot ══════╝`;
+
+    return api.sendMessage(message, threadID, messageID);
+};
